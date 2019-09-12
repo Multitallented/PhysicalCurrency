@@ -1,0 +1,27 @@
+author: Multitallented
+database: false
+description: Allows you to create structures and towns.
+main: org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency
+name: PhysicalCurrency
+load: POSTWORLD
+version: 1.0.0
+api-version: 1.14
+depend: [Vault]
+softdepend:
+  - PlaceholderAPI
+commands:
+  pcurr:
+    aliases: ['money', 'bal']
+    description: Physical Currency commands
+    usage: /<command>
+  pay:
+    description: Pay another user
+    usage: /<command>
+permissions:
+  pcurr.pay:
+    description: Allows players to pay other players
+    default: false
+  pcurr.admin:
+    description: Lets you use admin commands
+    default: op
+loadafter: [Vault, PlaceholderAPI]
