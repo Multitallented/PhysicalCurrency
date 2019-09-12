@@ -1,4 +1,4 @@
-package main.java.org.redcastlemedia.multitallented.physicalcurrency;
+package org.redcastlemedia.multitallented.physicalcurrency;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

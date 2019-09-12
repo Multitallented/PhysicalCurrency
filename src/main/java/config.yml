@@ -1,0 +1,4 @@
+# Enter how the number 1000 should be displayed
+format: "$1,000.00"
+name-singular: "coin"
+name-plural: "coins"

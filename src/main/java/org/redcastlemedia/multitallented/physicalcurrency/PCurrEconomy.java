@@ -1,9 +1,12 @@
-package main.java.org.redcastlemedia.multitallented.physicalcurrency;
+package org.redcastlemedia.multitallented.physicalcurrency;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class PCurrEconomy implements Economy {
@@ -25,22 +28,32 @@ public class PCurrEconomy implements Economy {
 
     @Override
     public int fractionalDigits() {
-        return 0;
+        return 2;
     }
 
     @Override
     public String format(double v) {
-        return null;
+        StringBuilder stringBuilder = new StringBuilder(ConfigManager.getInstance().getPrefix());
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        DecimalFormat numberFormat = (DecimalFormat) nf;
+        numberFormat.setMinimumFractionDigits(ConfigManager.getInstance().getNumberOfDecimalPlaces());
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator(ConfigManager.getInstance().getDecimal());
+        decimalFormatSymbols.setGroupingSeparator(ConfigManager.getInstance().getSeparator());
+        numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        stringBuilder.append(numberFormat.format(v));
+        stringBuilder.append(ConfigManager.getInstance().getSuffix());
+        return stringBuilder.toString();
     }
 
     @Override
     public String currencyNamePlural() {
-        return null;
+        return ConfigManager.getInstance().getNamePlural();
     }
 
     @Override
     public String currencyNameSingular() {
-        return null;
+        return ConfigManager.getInstance().getNameSingular();
     }
 
     @Override

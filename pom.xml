@@ -70,13 +70,13 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.Indyuce.mmoitems</groupId>
-            <artifactId>MMOItems</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>
-            <version>4.7.17</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>net.Indyuce.mmoitems</groupId>-->
+<!--            <artifactId>MMOItems</artifactId>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${basedir}/../dependencies/MMOItems Premium.jar</systemPath>-->
+<!--            <version>4.7.17</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
@@ -92,7 +92,7 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
