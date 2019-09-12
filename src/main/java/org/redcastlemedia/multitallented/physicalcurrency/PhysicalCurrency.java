@@ -1,12 +1,11 @@
 package org.redcastlemedia.multitallented.physicalcurrency;
 
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterEconomyService;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterListeners;
 
 public class PhysicalCurrency extends JavaPlugin {
     private static PhysicalCurrency instance = null;
@@ -16,30 +15,22 @@ public class PhysicalCurrency extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            getLogger().severe(getPrefix() + "Unable to hook Vault. Disabling...");
-            return;
-        }
-        Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
-        if (vault == null) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            getLogger().severe(getPrefix() + "Unable to hook Vault. Disabling...");
-            return;
-        }
-        PCurrEconomy pCurrEconomy = new PCurrEconomy();
-        Bukkit.getServicesManager().register(Economy.class, pCurrEconomy, vault, ServicePriority.Normal);
+        RegisterEconomyService.execute();
+        RegisterListeners.execute();
+        getLogger().info(getPrefix() + "Enabled!");
     }
 
     @Override
     public void onDisable() {
         getServer().getServicesManager().unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+        getLogger().info(getPrefix() + "Disabled!");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
+        // TODO pay
+        // TODO admin
         return true;
     }
 

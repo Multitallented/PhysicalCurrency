@@ -2,3 +2,7 @@
 format: "$1,000.00"
 name-singular: "coin"
 name-plural: "coins"
+
+redis:
+  host: ""
+  port: ""
