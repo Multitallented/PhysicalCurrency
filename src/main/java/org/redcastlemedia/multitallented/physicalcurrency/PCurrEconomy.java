@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.physicalcurrency;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.HasAccount;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -58,22 +59,22 @@ public class PCurrEconomy implements Economy {
 
     @Override
     public boolean hasAccount(String s) {
-        return false;
+        return HasAccount.execute(s);
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return false;
+        return HasAccount.execute(offlinePlayer);
     }
 
     @Override
-    public boolean hasAccount(String s, String s1) {
-        return false;
+    public boolean hasAccount(String s, String worldName) {
+        return HasAccount.execute(s);
     }
 
     @Override
-    public boolean hasAccount(OfflinePlayer offlinePlayer, String s) {
-        return false;
+    public boolean hasAccount(OfflinePlayer offlinePlayer, String worldName) {
+        return HasAccount.execute(offlinePlayer);
     }
 
     @Override

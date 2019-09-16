@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.commands.PCurrCommand;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.CreateCustomRecipe;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterCommands;
@@ -25,6 +26,12 @@ public class PhysicalCurrency extends JavaPlugin {
         RegisterListeners.execute();
         commands = RegisterCommands.execute();
         CreateCustomRecipe.execute();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                AccountManager.getInstance().cleanUp();
+            }
+        }, 80L, 80L);
         getLogger().info(getPrefix() + "Enabled!");
     }
 
@@ -32,6 +39,8 @@ public class PhysicalCurrency extends JavaPlugin {
     public void onDisable() {
         getServer().getServicesManager().unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+        AccountManager.getInstance().unloadAllPlayers();
+        instance = null;
         getLogger().info(getPrefix() + "Disabled!");
     }
 
