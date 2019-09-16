@@ -43,27 +43,7 @@ public class AccountManager {
             return false;
         }
 
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-        futureLoads.add(executor.schedule(new Runnable() {
-            @Override
-            public void run() {
-                if (accounts.containsKey(uuid)) {
-                    return;
-                }
-                FileConfiguration config = new YamlConfiguration();
-                try {
-                    config.load(playerFile);
-                    if (accounts.containsKey(uuid)) {
-                        return;
-                    }
-                    accounts.put(uuid, new Account(
-                            uuid, config.getDouble("amount", 0)
-                    ));
-                } catch (Exception e) {
-
-                }
-            }
-        }, 10, TimeUnit.MILLISECONDS));
+        loadAccount(uuid, playerFile, true);
         return true;
     }
 
@@ -132,6 +112,58 @@ public class AccountManager {
         }
     }
 
+    private void loadAccount(UUID uuid, boolean lazy) {
+        loadAccount(uuid, null, lazy);
+    }
+
+    private void loadAccount(UUID uuid, final File playerFile, boolean lazy) {
+        if (lazy) {
+            ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+            futureLoads.add(executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    if (accounts.containsKey(uuid)) {
+                        return;
+                    }
+                    if (playerFile == null) {
+
+                    }
+                    load(playerFile, uuid);
+                }
+            }, 10, TimeUnit.MILLISECONDS));
+        } else {
+            File newPlayerFile = playerFile;
+            if (playerFile == null) {
+                File playerDataFolder = new File(PhysicalCurrency.getInstance().getDataFolder(), "data");
+                if (!playerDataFolder.exists()) {
+                    return;
+                }
+                newPlayerFile = new File(playerDataFolder, uuid.toString() + ".yml");
+                if (!playerFile.exists()) {
+                    return;
+                }
+            }
+            load(newPlayerFile, uuid);
+        }
+    }
+
+    private void load(File playerFile, UUID uuid) {
+        FileConfiguration config = new YamlConfiguration();
+        try {
+            config.load(playerFile);
+            if (accounts.containsKey(uuid)) {
+                return;
+            }
+            accounts.put(uuid, new Account(
+                    uuid, config.getDouble("amount", 0)
+            ));
+        } catch (Exception e) {
+            PhysicalCurrency.getInstance().getLogger().severe(PhysicalCurrency.getPrefix() +
+                    "Unable to load existing file " + playerFile.getName());
+            return;
+        }
+    }
+
     private void saveLater(UUID uuid) {
         final Account ACCOUNT = accounts.get(uuid);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
@@ -163,5 +195,16 @@ public class AccountManager {
                 return;
             }
         }
+    }
+
+    public Account getAccount(UUID uuid) {
+        if (accounts.containsKey(uuid)) {
+            loadAccount(uuid, false);
+        }
+        if (accounts.get(uuid) == null) {
+            accounts.put(uuid, new Account(uuid, 0));
+            needSaving.add(uuid);
+        }
+        return accounts.get(uuid);
     }
 }
