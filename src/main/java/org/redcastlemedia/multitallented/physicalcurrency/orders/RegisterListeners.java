@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 import org.redcastlemedia.multitallented.physicalcurrency.listeners.PluginListener;
 
-public class RegisterListeners {
+public final class RegisterListeners {
+    private RegisterListeners() {
+
+    }
     public static void execute() {
-        PluginListener pluginListener = new PluginListener();
-        Bukkit.getPluginManager().registerEvents(pluginListener, PhysicalCurrency.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PluginListener(), PhysicalCurrency.getInstance());
     }
 }

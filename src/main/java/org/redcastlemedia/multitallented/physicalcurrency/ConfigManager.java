@@ -1,6 +1,8 @@
 package org.redcastlemedia.multitallented.physicalcurrency;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.redcastlemedia.multitallented.physicalcurrency.util.ItemUtil;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,20 +10,26 @@ import lombok.Setter;
 public class ConfigManager {
     private static ConfigManager instance = null;
 
-    @Getter @Setter
+    @Getter
     protected String prefix = "$";
-    @Getter @Setter
+    @Getter
     protected String suffix = "";
-    @Getter @Setter
+    @Getter
     protected char separator = ',';
-    @Getter @Setter
+    @Getter
     protected char decimal = '.';
-    @Getter @Setter
+    @Getter
     protected int numberOfDecimalPlaces = 2;
-    @Getter @Setter
+    @Getter
     protected String nameSingular = "coin";
-    @Getter @Setter
+    @Getter
     protected String namePlural = "coins";
+    @Getter
+    private ItemStack singleItem;
+    @Getter
+    private ItemStack nineItem;
+    @Getter
+    private ItemStack eightyOneItem;
 
     public static ConfigManager getInstance() {
         if (instance == null) {
@@ -43,6 +51,15 @@ public class ConfigManager {
         String format = config.getString("format", "$1,000.00");
         nameSingular = config.getString("name-singular", "coin");
         namePlural = config.getString("name-plural", "coins");
+        singleItem = ItemUtil.processItem(config.getString("single-currency.material", "GOLD_NUGGET"),
+                config.getString("single-currency.name", null),
+                config.getStringList("single-currency.lore"));
+        nineItem = ItemUtil.processItem(config.getString("nine-currency.material", "GOLD_INGOT"),
+                config.getString("nine-currency.name", null),
+                config.getStringList("nine-currency.lore"));
+        eightyOneItem = ItemUtil.processItem(config.getString("eighty-one-currency.material", "GOLD_BLOCK"),
+                config.getString("eighty-one-currency.name", null),
+                config.getStringList("eighty-one-currency.lore"));
         parseFormat(format);
     }
 

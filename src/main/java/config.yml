@@ -4,5 +4,21 @@ name-singular: "coin"
 name-plural: "coins"
 
 redis:
+  enabled: false
   host: ""
   port: ""
+
+#single-currency:
+  # material: "GOLD_NUGGET"
+  # name: "Gold Nugget"
+  # lore: []
+
+#nine-currency:
+#  material: "GOLD_INGOT"
+#  name: "Gold Ingot"
+#  lore: []
+
+#eighty-one-currency:
+#  material: "GOLD_BLOCK"
+#  name: "Gold Block"
+#  lore: []

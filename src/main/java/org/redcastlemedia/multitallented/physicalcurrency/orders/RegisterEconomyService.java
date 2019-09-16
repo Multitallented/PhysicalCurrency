@@ -8,7 +8,10 @@ import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 
 import net.milkbowl.vault.economy.Economy;
 
-public class RegisterEconomyService {
+public final class RegisterEconomyService {
+    private RegisterEconomyService() {
+
+    }
     public static void execute() {
         if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
             Bukkit.getPluginManager().disablePlugin(PhysicalCurrency.getInstance());
