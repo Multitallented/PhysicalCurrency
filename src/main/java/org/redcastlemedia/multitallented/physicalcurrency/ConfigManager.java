@@ -50,6 +50,10 @@ public class ConfigManager {
     private String eightyOneName;
     @Getter
     private List<String> eightyOneLore;
+    @Getter
+    private boolean preventInteract;
+    @Getter
+    private boolean preventPlacing;
 
     public static ConfigManager getInstance() {
         if (instance == null) {
@@ -71,6 +75,9 @@ public class ConfigManager {
         String format = config.getString("format", "$1,000.00");
         nameSingular = config.getString("name-singular", "coin");
         namePlural = config.getString("name-plural", "coins");
+        preventInteract = config.getBoolean("prevent-interaction", false);
+        preventPlacing = config.getBoolean("prevent-placing", false);
+
         singleMaterialString = config.getString("single-currency.material", "GOLD_NUGGET");
         singleName = config.getString("single-currency.name", null);
         singleLore = config.getStringList("single-currency.lore");
