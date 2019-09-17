@@ -20,6 +20,7 @@ public final class WithdrawPlayer {
         double newAmount = account.getAmount() - amount;
         newAmount = newAmount < 0 ? 0 : newAmount;
         account.setAmount(newAmount);
+        // TODO withdraw physical currency
         return new EconomyResponse(amount, newAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }

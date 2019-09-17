@@ -19,6 +19,7 @@ public final class DepositPlayer {
         Account account = AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId());
         double newAmount = account.getAmount() + amount;
         account.setAmount(newAmount);
+        // TODO deposit physical currency
         return new EconomyResponse(amount, newAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }

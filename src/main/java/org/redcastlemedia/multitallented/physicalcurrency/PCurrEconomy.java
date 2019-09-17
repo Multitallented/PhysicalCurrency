@@ -8,12 +8,10 @@ import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.DepositPlayer;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.Format;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.GetBalance;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.HasAccount;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.WithdrawPlayer;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,12 +75,12 @@ public class PCurrEconomy implements Economy {
     @Override
     public double getBalance(String s) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(s);
-        return AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId()).getAmount();
+        return GetBalance.execute(offlinePlayer);
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        return AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId()).getAmount();
+        return GetBalance.execute(offlinePlayer);
     }
 
     @Override
@@ -98,12 +96,12 @@ public class PCurrEconomy implements Economy {
     @Override
     public boolean has(String s, double v) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(s);
-        return AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId()).getAmount() >= v;
+        return GetBalance.execute(offlinePlayer) >= v;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double v) {
-        return AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId()).getAmount() >= v;
+        return GetBalance.execute(offlinePlayer) >= v;
     }
 
     @Override
