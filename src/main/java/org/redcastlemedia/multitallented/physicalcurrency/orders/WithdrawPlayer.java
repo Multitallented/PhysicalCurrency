@@ -23,12 +23,15 @@ public final class WithdrawPlayer {
         if (offlinePlayer.isOnline() && amount > account.getAmount()) {
             Player player = (Player) offlinePlayer;
             TransferPhysicalToAccount.execute(player, amount);
-            TransferAccountToPhysical.execute(player);
-            inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
         }
         double newAmount = account.getAmount() - amount;
         newAmount = newAmount < 0 ? 0 : newAmount;
         account.setAmount(newAmount);
+        if (offlinePlayer.isOnline() && newAmount > 0) {
+            Player player = (Player) offlinePlayer;
+            TransferAccountToPhysical.execute(player);
+            inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
+        }
         return new EconomyResponse(amount, newAmount + inventoryAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }
