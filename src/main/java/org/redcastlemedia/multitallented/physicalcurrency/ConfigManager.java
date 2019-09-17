@@ -1,5 +1,7 @@
 package org.redcastlemedia.multitallented.physicalcurrency;
 
+import java.util.List;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.util.ItemUtil;
@@ -30,6 +32,24 @@ public class ConfigManager {
     private ItemStack nineItem;
     @Getter
     private ItemStack eightyOneItem;
+    @Getter
+    private String singleMaterialString;
+    @Getter
+    private String singleName;
+    @Getter
+    private List<String> singleLore;
+    @Getter
+    private String nineMaterialString;
+    @Getter
+    private String nineName;
+    @Getter
+    private List<String> nineLore;
+    @Getter
+    private String eightyOneMaterialString;
+    @Getter
+    private String eightyOneName;
+    @Getter
+    private List<String> eightyOneLore;
 
     public static ConfigManager getInstance() {
         if (instance == null) {
@@ -51,15 +71,20 @@ public class ConfigManager {
         String format = config.getString("format", "$1,000.00");
         nameSingular = config.getString("name-singular", "coin");
         namePlural = config.getString("name-plural", "coins");
-        singleItem = ItemUtil.processItem(config.getString("single-currency.material", "GOLD_NUGGET"),
-                config.getString("single-currency.name", null),
-                config.getStringList("single-currency.lore"));
-        nineItem = ItemUtil.processItem(config.getString("nine-currency.material", "GOLD_INGOT"),
-                config.getString("nine-currency.name", null),
-                config.getStringList("nine-currency.lore"));
-        eightyOneItem = ItemUtil.processItem(config.getString("eighty-one-currency.material", "GOLD_BLOCK"),
-                config.getString("eighty-one-currency.name", null),
-                config.getStringList("eighty-one-currency.lore"));
+        singleMaterialString = config.getString("single-currency.material", "GOLD_NUGGET");
+        singleName = config.getString("single-currency.name", null);
+        singleLore = config.getStringList("single-currency.lore");
+        singleItem = ItemUtil.processItem(singleMaterialString, singleName, singleLore);
+
+        nineMaterialString = config.getString("nine-currency.material", "GOLD_INGOT");
+        nineName = config.getString("nine-currency.name", null);
+        nineLore = config.getStringList("nine-currency.lore");
+        nineItem = ItemUtil.processItem(nineMaterialString, nineName, nineLore);
+
+        eightyOneMaterialString = config.getString("eighty-one-currency.material", "GOLD_BLOCK");
+        eightyOneName = config.getString("eighty-one-currency.name", null);
+        eightyOneLore = config.getStringList("eighty-one-currency.lore");
+        eightyOneItem = ItemUtil.processItem(eightyOneMaterialString, eightyOneName, eightyOneLore);
         parseFormat(format);
     }
 
