@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.util.ItemUtil;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class ConfigManager {
     private static ConfigManager instance = null;
@@ -67,7 +66,7 @@ public class ConfigManager {
         loadConfig();
     }
 
-    private void loadConfig() {
+    public void loadConfig() {
         if (PhysicalCurrency.getInstance() == null) {
             return;
         }
