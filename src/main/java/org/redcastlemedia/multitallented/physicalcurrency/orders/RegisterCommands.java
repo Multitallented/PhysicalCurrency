@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.physicalcurrency.orders;
 
 import java.util.HashMap;
 
+import org.redcastlemedia.multitallented.physicalcurrency.commands.GenericCommand;
 import org.redcastlemedia.multitallented.physicalcurrency.commands.PCurrCommand;
 
 public final class RegisterCommands {
@@ -11,9 +12,10 @@ public final class RegisterCommands {
     public static HashMap<String, PCurrCommand> execute() {
         HashMap<String, PCurrCommand> commands = new HashMap<>();
         commands.put("pay", null); // TODO make paycommand
-        commands.put("pcurr", null); // TODO make pcurr command
-        commands.put("money", null); // TODO make pcurr command
-        commands.put("bal", null); // TODO make pcurr command
+        GenericCommand genericCommand = new GenericCommand();
+        commands.put("pcurr", genericCommand);
+        commands.put("money", genericCommand);
+        commands.put("bal", genericCommand);
         return commands;
     }
 }
