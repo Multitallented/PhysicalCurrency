@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.commands.PCurrCommand;
@@ -13,15 +14,19 @@ import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterCommand
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterEconomyService;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterListeners;
 
+import net.milkbowl.vault.permission.Permission;
+
 public class PhysicalCurrency extends JavaPlugin {
     private static PhysicalCurrency instance = null;
     private static HashMap<String, PCurrCommand> commands;
+    public static Permission perm = null;
 
     // https://github.com/MilkBowl/Vault/blob/master/src/net/milkbowl/vault/Vault.java
 
     @Override
     public void onEnable() {
         instance = this;
+        setupPermissions();
         RegisterEconomyService.execute();
         RegisterListeners.execute();
         commands = RegisterCommands.execute();
@@ -50,6 +55,13 @@ public class PhysicalCurrency extends JavaPlugin {
             return false;
         }
         return commands.get(label).execute(sender, args);
+    }
+
+    private void setupPermissions() {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(Permission.class);
+        if (permissionProvider != null) {
+            perm = permissionProvider.getProvider();
+        }
     }
 
     public static String getPrefix() {
