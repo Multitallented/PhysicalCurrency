@@ -2,12 +2,14 @@ package org.redcastlemedia.multitallented.physicalcurrency.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.DepositPlayer;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.Format;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.GetBalance;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.HasAccount;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.WithdrawPlayer;
 
 public class Pay implements PCurrCommand {
@@ -44,17 +46,22 @@ public class Pay implements PCurrCommand {
             commandSender.sendMessage(ChatColor.RED + PhysicalCurrency.getPrefix() + "You don't have " + Format.execute(amount));
             return true;
         }
-        Player receipt = Bukkit.getPlayer(displayName);
+        OfflinePlayer receipt = Bukkit.getPlayer(displayName);
         if (receipt == null) {
-            commandSender.sendMessage(ChatColor.RED + PhysicalCurrency.getPrefix() + "No online player found by the name " + displayName);
-            return true;
+            receipt = Bukkit.getOfflinePlayer(displayName);
+            if (!HasAccount.execute(receipt)) {
+                commandSender.sendMessage(ChatColor.RED + PhysicalCurrency.getPrefix() + "No player found by the name " + displayName);
+                return true;
+            }
         }
         WithdrawPlayer.execute(player, amount);
         DepositPlayer.execute(receipt, amount);
         player.sendMessage(ChatColor.GREEN + PhysicalCurrency.getPrefix() +
                 "You have payed " + Format.execute(amount) + " to " + displayName);
-        receipt.sendMessage(ChatColor.GREEN + PhysicalCurrency.getPrefix() +
-                player.getDisplayName() + " payed you " + Format.execute(amount));
+        if (receipt instanceof Player) {
+            ((Player) receipt).sendMessage(ChatColor.GREEN + PhysicalCurrency.getPrefix() +
+                    player.getDisplayName() + " payed you " + Format.execute(amount));
+        }
         return true;
     }
 }

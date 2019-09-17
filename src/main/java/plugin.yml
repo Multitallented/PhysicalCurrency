@@ -13,7 +13,7 @@ commands:
   pcurr:
     aliases: ['money', 'bal']
     description: Physical Currency commands
-    usage: /<command>
+    usage: /<command> [set|add|sub] [player] [amount]
   pay:
     description: Pay another user
     usage: /<command>

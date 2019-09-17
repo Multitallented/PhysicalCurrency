@@ -14,6 +14,18 @@ public class Generic implements PCurrCommand {
                     Format.execute(GetBalance.execute((Player) commandSender)));
             return true;
         }
+        if (args[0].equalsIgnoreCase("set") && args.length > 2) {
+            new Set().execute(commandSender, args);
+            return true;
+        }
+        if ((args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("add")) &&
+                args.length > 2) {
+            new Add().execute(commandSender, args);
+        }
+        if ((args[0].equalsIgnoreCase("take") || args[0].equalsIgnoreCase("sub") ||
+                args[0].equalsIgnoreCase("subtract")) && args.length > 2) {
+            new Subtract().execute(commandSender, args);
+        }
         // TODO admin args
         return true;
     }
