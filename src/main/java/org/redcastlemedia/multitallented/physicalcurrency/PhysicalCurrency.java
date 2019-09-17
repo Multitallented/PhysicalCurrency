@@ -26,6 +26,7 @@ public class PhysicalCurrency extends JavaPlugin {
     @Override
     public void onEnable() {
         if (!getDataFolder().exists()) {
+            getDataFolder().mkdir();
             saveDefaultConfig();
         }
         instance = this;
