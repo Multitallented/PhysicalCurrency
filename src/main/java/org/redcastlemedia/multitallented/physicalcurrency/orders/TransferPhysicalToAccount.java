@@ -39,6 +39,7 @@ public final class TransferPhysicalToAccount {
             }
         }
         player.getInventory().removeItem((ItemStack[]) removeThese.toArray());
+        account.setAmount(account.getAmount() + amountTaken);
         return amountTaken;
     }
     private static int addStackToAmount(ItemStack itemStack,

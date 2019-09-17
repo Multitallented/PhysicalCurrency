@@ -19,20 +19,17 @@ public final class WithdrawPlayer {
     }
     public static EconomyResponse execute(OfflinePlayer offlinePlayer, double amount) {
         Account account = AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId());
-        if (offlinePlayer.isOnline()) {
+        double inventoryAmount = 0;
+        if (offlinePlayer.isOnline() && amount > account.getAmount()) {
             Player player = (Player) offlinePlayer;
-            double amountTaken = TransferPhysicalToAccount.execute(player, amount);
+            TransferPhysicalToAccount.execute(player, amount);
             TransferAccountToPhysical.execute(player);
-            double inventoryAmount = ItemUtil.countCurrencyInInventory(player.getInventory());
-            if (amount <= amountTaken) {
-                return new EconomyResponse(amount, account.getAmount() + inventoryAmount,
-                        EconomyResponse.ResponseType.SUCCESS, "");
-            }
+            inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
         }
         double newAmount = account.getAmount() - amount;
         newAmount = newAmount < 0 ? 0 : newAmount;
         account.setAmount(newAmount);
-        return new EconomyResponse(amount, newAmount,
+        return new EconomyResponse(amount, newAmount + inventoryAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }
 }
