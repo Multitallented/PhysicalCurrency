@@ -2,6 +2,7 @@ package org.redcastlemedia.multitallented.physicalcurrency.orders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.Account;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 
@@ -19,7 +20,10 @@ public final class DepositPlayer {
         Account account = AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId());
         double newAmount = account.getAmount() + amount;
         account.setAmount(newAmount);
-        // TODO deposit physical currency
+        if (offlinePlayer.isOnline()) {
+            Player player = (Player) offlinePlayer;
+            TransferAccountToPhysical.execute(player);
+        }
         return new EconomyResponse(amount, newAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }
