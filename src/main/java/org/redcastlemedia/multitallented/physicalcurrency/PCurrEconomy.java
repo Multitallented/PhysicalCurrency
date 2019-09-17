@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.DepositPlayer;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.Format;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.HasAccount;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.WithdrawPlayer;
 
@@ -40,17 +41,7 @@ public class PCurrEconomy implements Economy {
 
     @Override
     public String format(double v) {
-        StringBuilder stringBuilder = new StringBuilder(ConfigManager.getInstance().getPrefix());
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        DecimalFormat numberFormat = (DecimalFormat) nf;
-        numberFormat.setMinimumFractionDigits(ConfigManager.getInstance().getNumberOfDecimalPlaces());
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-        decimalFormatSymbols.setDecimalSeparator(ConfigManager.getInstance().getDecimal());
-        decimalFormatSymbols.setGroupingSeparator(ConfigManager.getInstance().getSeparator());
-        numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
-        stringBuilder.append(numberFormat.format(v));
-        stringBuilder.append(ConfigManager.getInstance().getSuffix());
-        return stringBuilder.toString();
+        return Format.execute(v);
     }
 
     @Override
