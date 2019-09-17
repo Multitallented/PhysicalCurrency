@@ -25,6 +25,9 @@ public class PhysicalCurrency extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!getDataFolder().exists()) {
+            saveDefaultConfig();
+        }
         instance = this;
         setupPermissions();
         RegisterEconomyService.execute();

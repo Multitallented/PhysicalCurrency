@@ -4,9 +4,9 @@ name-singular: "coin"
 name-plural: "coins"
 
 redis:
-  enabled: false
-  host: ""
-  port: ""
+  enabled: false # if false, it will use flat file storage
+#  host: ""
+#  port: ""
 
 #single-currency:
   # material: "GOLD_NUGGET"
