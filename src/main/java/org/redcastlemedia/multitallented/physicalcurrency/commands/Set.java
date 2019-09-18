@@ -44,7 +44,6 @@ public class Set implements PCurrCommand {
         }
 
         double balance = GetBalance.execute(receipt);
-        System.out.println("withdraw or deposit? " + balance + ":" + amount);
         if (balance > amount) {
             WithdrawPlayer.execute(receipt, balance - amount);
         } else if (balance < amount) {

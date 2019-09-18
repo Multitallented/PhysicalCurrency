@@ -15,7 +15,6 @@ public final class GetBalance {
         double balance = account.getAmount();
         if (offlinePlayer.isOnline()) {
             double physicalCurrencyValue = ItemUtil.countCurrencyInInventory(((Player) offlinePlayer).getInventory());
-            System.out.println("inventory balance " + physicalCurrencyValue);
             balance += physicalCurrencyValue;
         }
         return balance;

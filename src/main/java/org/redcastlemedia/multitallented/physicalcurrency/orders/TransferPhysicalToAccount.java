@@ -51,14 +51,15 @@ public final class TransferPhysicalToAccount {
                                  int denomination,
                                  ArrayList<ItemStack> removeThese) {
         int stackAmount = itemStack.getAmount() * denomination;
-        if (amount - amountTaken >= stackAmount) {
+        if (amount - amountTaken == stackAmount || amount + denomination - amountTaken > stackAmount) {
             removeThese.add(itemStack);
             return stackAmount;
         } else {
-            int amountAdded = (int) Math.floor(amount - amountTaken);
-            int newStackAmount = itemStack.getAmount() - (int) Math.ceil((double) amountAdded / denomination);
+            int amountAdded = (int) Math.ceil(amount - amountTaken);
+            int amountToSubtract = (int) Math.ceil((double) amountAdded / (double) denomination);
+            int newStackAmount = itemStack.getAmount() - amountToSubtract;
             itemStack.setAmount(newStackAmount);
-            return amountAdded;
+            return amountToSubtract * denomination;
         }
     }
 }
