@@ -7,9 +7,9 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
 
 public final class CreateCustomRecipe {
-    private static final String SINGLE_CURRENCY_KEY = "PCURRSINGLECURR";
-    private static final String NINE_CURRENCY_KEY = "PCURRNINECURR";
-    private static final String EIGHTY_ONE_CURRENCY_KEY = "PCURREIGHTYONECURR";
+    private static final String SINGLE_CURRENCY_KEY = "pcurrsinglecurr";
+    private static final String NINE_CURRENCY_KEY = "pcurrninecurr";
+    private static final String EIGHTY_ONE_CURRENCY_KEY = "pcurreightyonecurr";
     private CreateCustomRecipe() {
 
     }

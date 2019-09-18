@@ -14,7 +14,7 @@ import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 
 public class AccountManager {
     private static AccountManager instance = null;
-    private static HashMap<UUID, Account> accounts = new HashMap<>();
+    static HashMap<UUID, Account> accounts = new HashMap<>();
     private static HashSet<UUID> needSaving = new HashSet<>();
     private static HashSet<ScheduledFuture<?>> futureSaves = new HashSet<>();
     private static HashSet<ScheduledFuture<?>> futureLoads = new HashSet<>();
@@ -117,6 +117,9 @@ public class AccountManager {
     }
 
     private void loadAccount(UUID uuid, final File playerFile, boolean lazy) {
+        if (PhysicalCurrency.getInstance() == null) {
+            return;
+        }
         if (lazy) {
             ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
             futureLoads.add(executor.schedule(new Runnable() {
@@ -139,7 +142,7 @@ public class AccountManager {
                     return;
                 }
                 newPlayerFile = new File(playerDataFolder, uuid.toString() + ".yml");
-                if (!playerFile.exists()) {
+                if (!newPlayerFile.exists()) {
                     return;
                 }
             }

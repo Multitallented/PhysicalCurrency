@@ -19,11 +19,14 @@ public final class DepositPlayer {
     public static EconomyResponse execute(OfflinePlayer offlinePlayer, double amount) {
         Account account = AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId());
         double newAmount = account.getAmount() + amount;
+        System.out.println(account.getAmount() + ":" + amount);
         account.setAmount(newAmount);
+        System.out.println("new amount " + newAmount);
         if (offlinePlayer.isOnline()) {
             Player player = (Player) offlinePlayer;
             TransferAccountToPhysical.execute(player);
         }
+        System.out.println(account.getAmount());
         return new EconomyResponse(amount, newAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
     }

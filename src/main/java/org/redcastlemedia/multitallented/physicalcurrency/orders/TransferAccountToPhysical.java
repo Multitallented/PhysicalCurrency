@@ -1,7 +1,5 @@
 package org.redcastlemedia.multitallented.physicalcurrency.orders;
 
-import java.util.HashMap;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
@@ -32,33 +30,33 @@ public final class TransferAccountToPhysical {
                         ConfigManager.getInstance().getEightyOneLore());
                 eightyOneClone.setAmount(eightyOneItem.getMaxStackSize());
                 player.getInventory().addItem(eightyOneClone);
-                account.setAmount(account.getAmount() - eightyOneClone.getAmount());
+                account.setAmount(account.getAmount() - (eightyOneClone.getAmount() * 81));
             } else if (account.getAmount() >= 81) {
                 ItemStack eightyOneClone = ItemUtil.processItem(
                         ConfigManager.getInstance().getEightyOneMaterialString(),
                         ConfigManager.getInstance().getEightyOneName(),
                         ConfigManager.getInstance().getEightyOneLore());
-                int newAmount = (int) (account.getAmount() / 81);
+                int newAmount = (int) Math.floor(account.getAmount() / 81);
                 newAmount = Math.min(newAmount, eightyOneClone.getMaxStackSize());
                 eightyOneClone.setAmount(newAmount);
                 player.getInventory().addItem(eightyOneClone);
-                account.setAmount(account.getAmount() - newAmount * 81);
-            } else if (account.getAmount() < 81) {
+                account.setAmount(account.getAmount() - (newAmount * 81));
+            } else if (account.getAmount() >= 9) {
                 ItemStack nineClone = ItemUtil.processItem(
                         ConfigManager.getInstance().getNineMaterialString(),
                         ConfigManager.getInstance().getNineName(),
                         ConfigManager.getInstance().getNineLore());
-                int newAmount = (int) (account.getAmount() / 9);
+                int newAmount = (int) Math.floor(account.getAmount() / 9);
                 newAmount = Math.min(newAmount, nineClone.getMaxStackSize());
                 nineClone.setAmount(newAmount);
                 player.getInventory().addItem(nineClone);
-                account.setAmount(account.getAmount() - newAmount * 9);
+                account.setAmount(account.getAmount() - (newAmount * 9));
             } else {
                 ItemStack singleClone = ItemUtil.processItem(
                         ConfigManager.getInstance().getSingleMaterialString(),
                         ConfigManager.getInstance().getSingleName(),
                         ConfigManager.getInstance().getSingleLore());
-                int newAmount = (int) account.getAmount();
+                int newAmount = (int) Math.floor(account.getAmount());
                 newAmount = Math.min(newAmount, singleClone.getMaxStackSize());
                 singleClone.setAmount(newAmount);
                 player.getInventory().addItem(singleClone);

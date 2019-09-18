@@ -38,22 +38,25 @@ public final class TransferPhysicalToAccount {
                 amountTaken += addStackToAmount(itemStack, amount, amountTaken, 81, removeThese);
             }
         }
-        player.getInventory().removeItem((ItemStack[]) removeThese.toArray());
+        if (!removeThese.isEmpty()) {
+            ItemStack[] tempList = new ItemStack[removeThese.size()];
+            player.getInventory().removeItem(removeThese.toArray(tempList));
+        }
         account.setAmount(account.getAmount() + amountTaken);
         return amountTaken;
     }
-    private static int addStackToAmount(ItemStack itemStack,
+    protected static int addStackToAmount(ItemStack itemStack,
                                  double amount,
                                  double amountTaken,
                                  int denomination,
                                  ArrayList<ItemStack> removeThese) {
         int stackAmount = itemStack.getAmount() * denomination;
-        if (amount - amountTaken > stackAmount) {
+        if (amount - amountTaken >= stackAmount) {
             removeThese.add(itemStack);
             return stackAmount;
         } else {
-            int amountAdded = (int) Math.ceil(amount - amountTaken);
-            int newStackAmount = stackAmount - (int) Math.ceil((double) amountAdded / denomination);
+            int amountAdded = (int) Math.floor(amount - amountTaken);
+            int newStackAmount = itemStack.getAmount() - (int) Math.ceil((double) amountAdded / denomination);
             itemStack.setAmount(newStackAmount);
             return amountAdded;
         }
