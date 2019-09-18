@@ -25,22 +25,28 @@ public class PhysicalCurrency extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdir();
-            saveDefaultConfig();
-        }
         instance = this;
-        setupPermissions();
-        RegisterEconomyService.execute();
-        RegisterListeners.execute();
-        commands = RegisterCommands.execute();
-        CreateCustomRecipe.execute();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                AccountManager.getInstance().cleanUp();
+        try {
+            if (!getDataFolder().exists()) {
+                getDataFolder().mkdir();
+                saveDefaultConfig();
             }
-        }, 80L, 80L);
+            setupPermissions();
+            RegisterEconomyService.execute();
+            RegisterListeners.execute();
+            commands = RegisterCommands.execute();
+            CreateCustomRecipe.execute();
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+                @Override
+                public void run() {
+                    AccountManager.getInstance().cleanUp();
+                }
+            }, 80L, 80L);
+        } catch (Exception e) {
+            e.printStackTrace();
+            getLogger().severe("Unable to start PCurrency");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
         getLogger().info(getPrefix() + "Enabled!");
     }
 

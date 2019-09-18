@@ -5,6 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
+import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 
 public final class CreateCustomRecipe {
     private static final String SINGLE_CURRENCY_KEY = "pcurrsinglecurr";
@@ -39,7 +40,13 @@ public final class CreateCustomRecipe {
                 stack2.getItemMeta().getLore() != null &&
                 !stack2.getItemMeta().getLore().isEmpty() &&
                 Bukkit.getServer().getRecipesFor(stack2).isEmpty()) {
-            Bukkit.getServer().addRecipe(recipe);
+            try {
+                Bukkit.getServer().addRecipe(recipe);
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
+                PhysicalCurrency.getInstance().getLogger().severe(PhysicalCurrency.getPrefix() +
+                        "Unable to add custom recipe!");
+            }
         }
     }
 }
