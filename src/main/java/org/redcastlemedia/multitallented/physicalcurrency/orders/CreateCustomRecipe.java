@@ -22,11 +22,12 @@ public final class CreateCustomRecipe {
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
         ShapedRecipe eightyOneCurrency = new ShapedRecipe(NamespacedKey.minecraft(EIGHTY_ONE_CURRENCY_KEY), eightyOneItem);
 
-        nineCurrency.shape("***", "***", "***");
-        eightyOneCurrency.shape("***", "***", "***");
+        nineCurrency.shape("EEE", "EEE", "EEE");
+        eightyOneCurrency.shape("EEE", "EEE", "EEE");
 
-        nineCurrency.setIngredient('*', singleItem.getData());
-        nineCurrency.setIngredient('*', nineItem.getData());
+        nineCurrency.setIngredient('E', singleItem.getData());
+
+        nineCurrency.setIngredient('E', nineItem.getData());
 
         addRecipe(singleItem, nineItem, nineCurrency);
         addRecipe(nineItem, eightyOneItem, eightyOneCurrency);
@@ -39,7 +40,11 @@ public final class CreateCustomRecipe {
                 stack2.getItemMeta().getLore() != null &&
                 !stack2.getItemMeta().getLore().isEmpty() &&
                 Bukkit.getServer().getRecipesFor(stack2).isEmpty()) {
-            Bukkit.getServer().addRecipe(recipe);
+            try {
+                Bukkit.getServer().addRecipe(recipe);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
