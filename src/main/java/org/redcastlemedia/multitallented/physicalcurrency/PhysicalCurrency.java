@@ -39,7 +39,11 @@ public class PhysicalCurrency extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
                 @Override
                 public void run() {
-                    AccountManager.getInstance().cleanUp();
+                    try {
+                        AccountManager.getInstance().cleanUp();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }, 80L, 80L);
         } catch (Exception e) {
