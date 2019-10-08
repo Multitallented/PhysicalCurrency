@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.StartSaveThread;
 
 public class AccountManager {
     private static AccountManager instance = null;
@@ -121,6 +122,7 @@ public class AccountManager {
             return;
         }
         if (lazy) {
+            StartSaveThread.checkThread();
             ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
             futureLoads.add(executor.schedule(new Runnable() {
                 @Override
@@ -168,6 +170,7 @@ public class AccountManager {
     }
 
     private void saveLater(UUID uuid) {
+        StartSaveThread.checkThread();
         final Account ACCOUNT = accounts.get(uuid);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
         futureSaves.add(executor.schedule(new Runnable() {

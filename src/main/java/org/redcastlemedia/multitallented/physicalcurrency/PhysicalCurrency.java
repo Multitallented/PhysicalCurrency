@@ -13,6 +13,7 @@ import org.redcastlemedia.multitallented.physicalcurrency.orders.CreateCustomRec
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterCommands;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterEconomyService;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.RegisterListeners;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.StartSaveThread;
 
 import net.milkbowl.vault.permission.Permission;
 
@@ -36,16 +37,7 @@ public class PhysicalCurrency extends JavaPlugin {
             RegisterListeners.execute();
             commands = RegisterCommands.execute();
             CreateCustomRecipe.execute();
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        AccountManager.getInstance().cleanUp();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, 80L, 80L);
+            StartSaveThread.execute();
         } catch (Exception e) {
             e.printStackTrace();
             getLogger().severe("Unable to start PCurrency");
