@@ -10,28 +10,40 @@ import org.redcastlemedia.multitallented.physicalcurrency.PhysicalCurrency;
 public final class CreateCustomRecipe {
     private static final String SINGLE_CURRENCY_KEY = "pcurrsinglecurr";
     private static final String NINE_CURRENCY_KEY = "pcurrninecurr";
+    private static final String NINE_CURRENCY_BREAK_KEY = "pcurrninecurr";
     private static final String EIGHTY_ONE_CURRENCY_KEY = "pcurreightyonecurr";
     private CreateCustomRecipe() {
 
     }
     public static void execute() {
         ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
-
         ItemStack nineItem = ConfigManager.getInstance().getNineItem();
-        ShapedRecipe nineCurrency = new ShapedRecipe(NamespacedKey.minecraft(NINE_CURRENCY_KEY), nineItem);
-
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
-        ShapedRecipe eightyOneCurrency = new ShapedRecipe(NamespacedKey.minecraft(EIGHTY_ONE_CURRENCY_KEY), eightyOneItem);
 
+
+        ShapedRecipe nineCurrency = new ShapedRecipe(NamespacedKey.minecraft(NINE_CURRENCY_KEY), nineItem);
         nineCurrency.shape("EEE", "EEE", "EEE");
-        eightyOneCurrency.shape("EEE", "EEE", "EEE");
-
-        nineCurrency.setIngredient('E', singleItem.getData());
-
-        nineCurrency.setIngredient('E', nineItem.getData());
-
+        nineCurrency.setIngredient('E', singleItem.getType());
         addRecipe(singleItem, nineItem, nineCurrency);
+
+        ShapedRecipe eightyOneCurrency = new ShapedRecipe(NamespacedKey.minecraft(EIGHTY_ONE_CURRENCY_KEY), eightyOneItem);
+        eightyOneCurrency.shape("EEE", "EEE", "EEE");
+        eightyOneCurrency.setIngredient('E', nineItem.getType());
         addRecipe(nineItem, eightyOneItem, eightyOneCurrency);
+
+        ItemStack nineItemBreak = new ItemStack(nineItem);
+        nineItemBreak.setAmount(9);
+        ShapedRecipe nineCurrencyBreak = new ShapedRecipe(NamespacedKey.minecraft(NINE_CURRENCY_BREAK_KEY), nineItemBreak);
+        nineCurrencyBreak.shape("E");
+        nineCurrencyBreak.setIngredient('E', eightyOneItem.getType());
+        addRecipe(nineItem, eightyOneItem, nineCurrencyBreak);
+
+        ItemStack singleItemBreak = new ItemStack(singleItem);
+        singleItemBreak.setAmount(9);
+        ShapedRecipe singleCurrencyBreak = new ShapedRecipe(NamespacedKey.minecraft(SINGLE_CURRENCY_KEY), nineItemBreak);
+        singleCurrencyBreak.shape("E");
+        singleCurrencyBreak.setIngredient('E', nineItem.getType());
+        addRecipe(singleItem, nineItem, singleCurrencyBreak);
     }
     private static void addRecipe(ItemStack stack1, ItemStack stack2, ShapedRecipe recipe) {
         if (stack1.getItemMeta() != null &&

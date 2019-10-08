@@ -1,11 +1,13 @@
 package org.redcastlemedia.multitallented.physicalcurrency.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -67,5 +69,44 @@ public class PlayerListener implements Listener {
                 ItemUtil.isEquivalentItem(itemStack, ConfigManager.getInstance().getEightyOneItem())) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerCraftItem(PrepareItemCraftEvent event) {
+        if (event.getInventory().getResult() == null) {
+            return;
+        }
+        ItemStack resultStack = event.getInventory().getResult();
+        ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
+        ItemStack nineItem = ConfigManager.getInstance().getNineItem();
+        ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
+        if (ItemUtil.isEquivalentItem(resultStack, singleItem)) {
+            if (hasMissingIngredients(event, nineItem)) {
+                event.getInventory().setResult(null);
+                return;
+            }
+        } else if (ItemUtil.isEquivalentItem(resultStack, nineItem)) {
+            if (hasMissingIngredients(event, singleItem) && hasMissingIngredients(event, eightyOneItem)) {
+                event.getInventory().setResult(null);
+                return;
+            }
+        } else if (ItemUtil.isEquivalentItem(resultStack, eightyOneItem)) {
+            if (hasMissingIngredients(event, nineItem)) {
+                event.getInventory().setResult(null);
+                return;
+            }
+        }
+    }
+
+    private boolean hasMissingIngredients(PrepareItemCraftEvent event, ItemStack ingredient) {
+        for (ItemStack itemStack : event.getInventory().getMatrix()) {
+            if (itemStack == null || itemStack.getType() == Material.AIR) {
+                continue;
+            }
+            if (!ItemUtil.isEquivalentItem(itemStack, ingredient)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
