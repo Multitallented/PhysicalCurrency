@@ -74,6 +74,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerCraftItem(PrepareItemCraftEvent event) {
         if (event.getInventory().getResult() == null) {
+            System.out.println("null result");
             return;
         }
         ItemStack resultStack = event.getInventory().getResult();
@@ -81,17 +82,23 @@ public class PlayerListener implements Listener {
         ItemStack nineItem = ConfigManager.getInstance().getNineItem();
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
         if (ItemUtil.isEquivalentItem(resultStack, singleItem)) {
+            System.out.println("result = single");
             if (hasMissingIngredients(event, nineItem)) {
+                System.out.println("missing nineItem ingredient");
                 event.getInventory().setResult(null);
                 return;
             }
         } else if (ItemUtil.isEquivalentItem(resultStack, nineItem)) {
+            System.out.println("result = nine");
             if (hasMissingIngredients(event, singleItem) && hasMissingIngredients(event, eightyOneItem)) {
+                System.out.println("missing single & eightyOne ingredients");
                 event.getInventory().setResult(null);
                 return;
             }
         } else if (ItemUtil.isEquivalentItem(resultStack, eightyOneItem)) {
+            System.out.println("result = eightyOne");
             if (hasMissingIngredients(event, nineItem)) {
+                System.out.println("missing ninItem ingredient");
                 event.getInventory().setResult(null);
                 return;
             }

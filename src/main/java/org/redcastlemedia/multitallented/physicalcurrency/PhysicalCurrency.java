@@ -36,8 +36,14 @@ public class PhysicalCurrency extends JavaPlugin {
             RegisterEconomyService.execute();
             RegisterListeners.execute();
             commands = RegisterCommands.execute();
-            CreateCustomRecipe.execute();
             StartSaveThread.execute();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("running custom recipes");
+                    CreateCustomRecipe.execute();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             getLogger().severe("Unable to start PCurrency");
