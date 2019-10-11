@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.physicalcurrency.orders;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.Account;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.util.ItemUtil;
@@ -31,6 +32,9 @@ public final class WithdrawPlayer {
             Player player = (Player) offlinePlayer;
             TransferAccountToPhysical.execute(player);
             inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
+        }
+        if (ConfigManager.getInstance().isUseLogs()) {
+            TransactionLog.execute(offlinePlayer, amount, true);
         }
         return new EconomyResponse(amount, newAmount + inventoryAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");

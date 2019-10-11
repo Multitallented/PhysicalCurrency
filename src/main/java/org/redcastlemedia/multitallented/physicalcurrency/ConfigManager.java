@@ -53,6 +53,8 @@ public class ConfigManager {
     private boolean preventInteract;
     @Getter
     private boolean preventPlacing;
+    @Getter
+    private boolean useLogs;
 
     public static ConfigManager getInstance() {
         if (instance == null) {
@@ -91,6 +93,8 @@ public class ConfigManager {
         eightyOneName = config.getString("eighty-one-currency.name", null);
         eightyOneLore = config.getStringList("eighty-one-currency.lore");
         eightyOneItem = ItemUtil.processItem(eightyOneMaterialString, eightyOneName, eightyOneLore);
+
+        useLogs = config.getBoolean("logging", false);
         parseFormat(format);
     }
 

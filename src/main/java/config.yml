@@ -6,6 +6,8 @@ name-plural: "coins"
 prevent-interaction: false # stops players from using the item
 prevent-placing: false # stops players from placing the items on the ground as blocks
 
+logging: false
+
 redis:
   enabled: false # if false, it will use flat file storage
 #  host: ""

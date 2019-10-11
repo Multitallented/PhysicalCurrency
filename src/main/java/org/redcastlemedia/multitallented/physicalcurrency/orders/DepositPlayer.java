@@ -3,6 +3,7 @@ package org.redcastlemedia.multitallented.physicalcurrency.orders;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.Account;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 
@@ -23,6 +24,9 @@ public final class DepositPlayer {
         if (offlinePlayer.isOnline()) {
             Player player = (Player) offlinePlayer;
             TransferAccountToPhysical.execute(player);
+        }
+        if (ConfigManager.getInstance().isUseLogs()) {
+            TransactionLog.execute(offlinePlayer, amount, false);
         }
         return new EconomyResponse(amount, newAmount,
                 EconomyResponse.ResponseType.SUCCESS, "");
