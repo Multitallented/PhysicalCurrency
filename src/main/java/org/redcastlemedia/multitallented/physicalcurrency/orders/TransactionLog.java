@@ -53,7 +53,19 @@ public final class TransactionLog {
             } else {
                 line += "Deposited " + Format.execute(amount) + " to";
             }
-            line += " player. New balance: " + Format.execute(GetBalance.execute(offlinePlayer));
+            line += " ";
+            if (offlinePlayer.getName() != null) {
+                line += offlinePlayer.getName();
+            } else {
+                line += "player";
+            }
+            line += " (";
+            if (offlinePlayer.isOnline()) {
+                line += "online";
+            } else {
+                line += "offline";
+            }
+            line += "). New balance: " + Format.execute(GetBalance.execute(offlinePlayer));
             bufferedWriter.newLine();
             bufferedWriter.write(line);
             bufferedWriter.close();
