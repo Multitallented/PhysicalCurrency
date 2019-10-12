@@ -24,14 +24,14 @@ public final class TransactionLog {
                 return;
             }
         }
-        File dataFolder = new File(pCurrFolder, "data");
-        if (!dataFolder.exists()) {
-            if (!dataFolder.mkdir()) {
+        File logFolder = new File(pCurrFolder, "logs");
+        if (!logFolder.exists()) {
+            if (!logFolder.mkdir()) {
                 PhysicalCurrency.getInstance().getLogger().severe("Unable to create data folder");
                 return;
             }
         }
-        File playerFile = new File(dataFolder, offlinePlayer.getUniqueId().toString() + ".yml");
+        File playerFile = new File(logFolder, offlinePlayer.getUniqueId().toString() + ".log");
         if (!playerFile.exists()) {
             try {
                 if (!playerFile.createNewFile()) {
@@ -44,7 +44,7 @@ public final class TransactionLog {
             }
         }
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(playerFile));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(playerFile, true));
             Date date = new Date();
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String line = "[" + dateFormat.format(date) + "] ";
@@ -54,6 +54,7 @@ public final class TransactionLog {
                 line += "Deposited " + Format.execute(amount) + " to";
             }
             line += " player. New balance: " + Format.execute(GetBalance.execute(offlinePlayer));
+            bufferedWriter.newLine();
             bufferedWriter.write(line);
             bufferedWriter.close();
         } catch (Exception e) {
