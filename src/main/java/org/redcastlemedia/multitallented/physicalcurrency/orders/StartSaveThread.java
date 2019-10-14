@@ -11,6 +11,9 @@ public final class StartSaveThread {
     }
 
     public static void execute() {
+        if (PhysicalCurrency.getInstance() == null) {
+            return;
+        }
         threadId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PhysicalCurrency.getInstance(), new Runnable() {
             @Override
             public void run() {
