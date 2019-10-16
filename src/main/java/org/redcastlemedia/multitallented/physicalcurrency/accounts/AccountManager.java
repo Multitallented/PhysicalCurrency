@@ -153,7 +153,7 @@ public class AccountManager {
     }
 
     public Account getAccount(UUID uuid) {
-        if (accounts.containsKey(uuid)) {
+        if (!accounts.containsKey(uuid)) {
             loadAccount(uuid);
         }
         if (accounts.get(uuid) == null) {
