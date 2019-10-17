@@ -5,13 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
@@ -73,29 +72,99 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerCraftItem(PrepareItemCraftEvent event) {
-        if (event.getInventory().getResult() == null) {
-            return;
-        }
-        ItemStack resultStack = event.getInventory().getResult();
         ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
         ItemStack nineItem = ConfigManager.getInstance().getNineItem();
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
-        if (ItemUtil.isEquivalentItem(resultStack, singleItem)) {
-            if (hasMissingIngredients(event, nineItem)) {
-                event.getInventory().setResult(null);
-                return;
+        if (event.getInventory().getResult() == null) {
+            int singleCount = 0;
+            int nineCount = 0;
+            int eightyOneCount = 0;
+            for (ItemStack itemStack : event.getInventory().getMatrix()) {
+                if (itemStack == null || itemStack.getType() == Material.AIR) {
+                    continue;
+                }
+                if (ItemUtil.isEquivalentItem(itemStack, singleItem)) {
+                    singleCount++;
+                } else if (ItemUtil.isEquivalentItem(itemStack, nineItem)) {
+                    nineCount++;
+                } else if (ItemUtil.isEquivalentItem(itemStack, eightyOneItem)) {
+                    eightyOneCount++;
+                }
             }
-        } else if (ItemUtil.isEquivalentItem(resultStack, nineItem)) {
-            if (hasMissingIngredients(event, singleItem) && hasMissingIngredients(event, eightyOneItem)) {
-                event.getInventory().setResult(null);
-                return;
+            if (singleCount == 9) {
+                ItemStack itemStack = new ItemStack(nineItem);
+                itemStack.setAmount(1);
+                event.getInventory().setResult(itemStack);
+            } else if (nineCount == 1) {
+                ItemStack itemStack = new ItemStack(singleItem);
+                itemStack.setAmount(9);
+                event.getInventory().setResult(itemStack);
+            } else if (nineCount == 9) {
+                ItemStack itemStack = new ItemStack(eightyOneItem);
+                itemStack.setAmount(1);
+                event.getInventory().setResult(itemStack);
+            } else if (eightyOneCount == 1) {
+                ItemStack itemStack = new ItemStack(nineItem);
+                itemStack.setAmount(9);
+                event.getInventory().setResult(itemStack);
             }
-        } else if (ItemUtil.isEquivalentItem(resultStack, eightyOneItem)) {
-            if (hasMissingIngredients(event, nineItem)) {
-                event.getInventory().setResult(null);
-                return;
+        } else {
+            ItemStack resultStack = event.getInventory().getResult();
+            if (ItemUtil.isEquivalentItem(resultStack, singleItem)) {
+                if (hasMissingIngredients(event, nineItem)) {
+                    event.getInventory().setResult(null);
+                }
+            } else if (ItemUtil.isEquivalentItem(resultStack, nineItem)) {
+                if (hasMissingIngredients(event, singleItem) && hasMissingIngredients(event, eightyOneItem)) {
+                    event.getInventory().setResult(null);
+                }
+            } else if (ItemUtil.isEquivalentItem(resultStack, eightyOneItem)) {
+                if (hasMissingIngredients(event, nineItem)) {
+                    event.getInventory().setResult(null);
+                }
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerCraftEvent(CraftItemEvent event) {
+        System.out.println("craft event");
+        ItemStack resultStack = event.getCurrentItem();
+        System.out.println(event.getCurrentItem() == null);
+        System.out.println(event.getCursor() == null);
+        if (resultStack == null) {
+            System.out.println("null result stack");
+            return;
+        }
+        ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
+        ItemStack nineItem = ConfigManager.getInstance().getNineItem();
+        ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
+        if (!ItemUtil.isEquivalentItem(resultStack, singleItem) &&
+                !ItemUtil.isEquivalentItem(resultStack, singleItem) &&
+                !ItemUtil.isEquivalentItem(resultStack, singleItem)) {
+            System.out.println("result stack no match");
+            return;
+        }
+        event.setCancelled(true);
+        event.setCurrentItem(resultStack);
+        ItemStack[] newStack = new ItemStack[9];
+        int i = 0;
+        CraftingInventory craftingInventory = event.getInventory();
+        for (ItemStack itemStack : craftingInventory.getMatrix()) {
+            if (itemStack == null) {
+                newStack[i] = null;
+            } else {
+                if (itemStack.getAmount() < 2) {
+                    newStack[i] = null;
+                } else {
+                    ItemStack itemStack1 = new ItemStack(itemStack);
+                    itemStack1.setAmount(itemStack1.getAmount() - 1);
+                    newStack[i] = itemStack1;
+                }
+            }
+            i++;
+        }
+        craftingInventory.setMatrix(newStack);
     }
 
     private boolean hasMissingIngredients(PrepareItemCraftEvent event, ItemStack ingredient) {
