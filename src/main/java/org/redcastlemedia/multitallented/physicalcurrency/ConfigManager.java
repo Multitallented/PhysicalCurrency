@@ -55,6 +55,8 @@ public class ConfigManager {
     private boolean preventPlacing;
     @Getter
     private boolean useLogs;
+    @Getter
+    private boolean customCrafting;
 
     public static ConfigManager getInstance() {
         if (instance == null) {
@@ -78,6 +80,7 @@ public class ConfigManager {
         namePlural = config.getString("name-plural", "coins");
         preventInteract = config.getBoolean("prevent-interaction", false);
         preventPlacing = config.getBoolean("prevent-placing", false);
+        customCrafting = config.getBoolean("custom-crafting", false);
 
         singleMaterialString = config.getString("single-currency.material", "GOLD_NUGGET");
         singleName = config.getString("single-currency.name", null);

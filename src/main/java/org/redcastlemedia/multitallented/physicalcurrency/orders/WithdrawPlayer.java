@@ -23,7 +23,7 @@ public final class WithdrawPlayer {
         double inventoryAmount = 0;
         if (offlinePlayer.isOnline() && amount > account.getAmount()) {
             Player player = (Player) offlinePlayer;
-            TransferPhysicalToAccount.execute(player, amount);
+            TransferPhysicalToAccount.execute(player, 9999999);
         }
         double newAmount = account.getAmount() - amount;
         newAmount = newAmount < 0 ? 0 : newAmount;

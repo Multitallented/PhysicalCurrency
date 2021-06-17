@@ -72,6 +72,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerCraftItem(PrepareItemCraftEvent event) {
+        if (!ConfigManager.getInstance().isCustomCrafting()) {
+            return;
+        }
         ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
         ItemStack nineItem = ConfigManager.getInstance().getNineItem();
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();
@@ -128,6 +131,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerCraftEvent(CraftItemEvent event) {
+        if (!ConfigManager.getInstance().isCustomCrafting()) {
+            return;
+        }
         System.out.println("craft event");
         ItemStack resultStack = event.getCurrentItem();
         System.out.println(event.getCurrentItem() == null);

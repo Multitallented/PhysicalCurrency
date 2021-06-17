@@ -16,6 +16,9 @@ public final class CreateCustomRecipe {
 
     }
     public static void execute() {
+        if (!ConfigManager.getInstance().isCustomCrafting()) {
+            return;
+        }
         ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
         ItemStack nineItem = ConfigManager.getInstance().getNineItem();
         ItemStack eightyOneItem = ConfigManager.getInstance().getEightyOneItem();

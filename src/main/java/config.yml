@@ -5,6 +5,7 @@ name-plural: "coins"
 
 prevent-interaction: false # stops players from using the item
 prevent-placing: false # stops players from placing the items on the ground as blocks
+custom-crafting: false
 
 logging: false
 
@@ -13,17 +14,17 @@ redis:
 #  host: ""
 #  port: ""
 
-#single-currency:
-  # material: "GOLD_NUGGET"
-  # name: "Gold Nugget"
+single-currency:
+   material: "EMERALD"
+  # name: ""
   # lore: []
 
-#nine-currency:
-#  material: "GOLD_INGOT"
+nine-currency:
+  material: "EMERALD_BLOCK"
 #  name: "Gold Ingot"
 #  lore: []
 
-#eighty-one-currency:
-#  material: "GOLD_BLOCK"
+eighty-one-currency:
+  material: "LODESTONE"
 #  name: "Gold Block"
 #  lore: []
