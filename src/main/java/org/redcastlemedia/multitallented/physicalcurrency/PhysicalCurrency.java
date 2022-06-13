@@ -40,7 +40,6 @@ public class PhysicalCurrency extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("running custom recipes");
                     CreateCustomRecipe.execute();
                 }
             });

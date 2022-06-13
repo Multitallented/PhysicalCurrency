@@ -1,5 +1,6 @@
 package org.redcastlemedia.multitallented.physicalcurrency.orders;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
@@ -39,7 +40,9 @@ public final class TransferAccountToPhysical {
                 int newAmount = (int) Math.floor(account.getAmount() / 81);
                 newAmount = Math.min(newAmount, eightyOneClone.getMaxStackSize());
                 eightyOneClone.setAmount(newAmount);
-                player.getInventory().addItem(eightyOneClone);
+                if (addItemToNonHotbar(player, eightyOneClone)) {
+                    player.getInventory().addItem(eightyOneClone);
+                }
                 account.setAmount(account.getAmount() - (newAmount * 81));
             } else if (account.getAmount() >= 9) {
                 ItemStack nineClone = ItemUtil.processItem(
@@ -49,7 +52,9 @@ public final class TransferAccountToPhysical {
                 int newAmount = (int) Math.floor(account.getAmount() / 9);
                 newAmount = Math.min(newAmount, nineClone.getMaxStackSize());
                 nineClone.setAmount(newAmount);
-                player.getInventory().addItem(nineClone);
+                if (addItemToNonHotbar(player, nineClone)) {
+                    player.getInventory().addItem(nineClone);
+                }
                 account.setAmount(account.getAmount() - (newAmount * 9));
             } else {
                 ItemStack singleClone = ItemUtil.processItem(
@@ -59,10 +64,23 @@ public final class TransferAccountToPhysical {
                 int newAmount = (int) Math.floor(account.getAmount());
                 newAmount = Math.min(newAmount, singleClone.getMaxStackSize());
                 singleClone.setAmount(newAmount);
-                player.getInventory().addItem(singleClone);
+                if (addItemToNonHotbar(player, singleClone)) {
+                    player.getInventory().addItem(singleClone);
+                }
                 account.setAmount(account.getAmount() - newAmount);
             }
             i++;
         } while (i < 27 && player.getInventory().firstEmpty() > -1 && account.getAmount() >= 1);
+    }
+
+    private static boolean addItemToNonHotbar(Player player, ItemStack itemStack) {
+        for (int i = 9; i< player.getInventory().getSize(); i++) {
+            ItemStack itemStack1 = player.getInventory().getItem(i);
+            if (itemStack1 == null || itemStack1.getType() == Material.AIR) {
+                player.getInventory().setItem(i, itemStack);
+                return false;
+            }
+        }
+        return true;
     }
 }

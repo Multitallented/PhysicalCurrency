@@ -25,12 +25,37 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+            <id>ender-zone</id> <!-- Vault Repo -->
+            <url>https://ci.ender.zone/plugin/repository/everything</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>Scarsz-Nexus</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>janmm14-public</id>
+            <url>https://repo.janmm14.de/repository/public/</url>
+        </repository>
+        <repository>
+            <id>reflex.public</id>
+            <name>Public Reflex Repository</name>
+            <url>https://archiva.reflex.rip/repository/public/</url>
+        </repository>
+        <repository>
+            <id>lumine-snapshots</id>
+            <url>https://mvn.lumine.io/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>enginehub-maven</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
         </repository>
     </repositories>
 

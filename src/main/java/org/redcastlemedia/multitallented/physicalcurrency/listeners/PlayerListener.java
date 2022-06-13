@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.redcastlemedia.multitallented.physicalcurrency.ConfigManager;
 import org.redcastlemedia.multitallented.physicalcurrency.accounts.AccountManager;
 import org.redcastlemedia.multitallented.physicalcurrency.orders.TransferAccountToPhysical;
+import org.redcastlemedia.multitallented.physicalcurrency.orders.TransferPhysicalToAccount;
 import org.redcastlemedia.multitallented.physicalcurrency.util.ItemUtil;
 
 public class PlayerListener implements Listener {
@@ -22,6 +23,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         AccountManager.getInstance().hasAccount(event.getPlayer().getUniqueId());
+        TransferPhysicalToAccount.execute(event.getPlayer(), 999999);
+        TransferAccountToPhysical.execute(event.getPlayer());
     }
 
     @EventHandler
@@ -134,12 +137,8 @@ public class PlayerListener implements Listener {
         if (!ConfigManager.getInstance().isCustomCrafting()) {
             return;
         }
-        System.out.println("craft event");
         ItemStack resultStack = event.getCurrentItem();
-        System.out.println(event.getCurrentItem() == null);
-        System.out.println(event.getCursor() == null);
         if (resultStack == null) {
-            System.out.println("null result stack");
             return;
         }
         ItemStack singleItem = ConfigManager.getInstance().getSingleItem();
@@ -148,7 +147,6 @@ public class PlayerListener implements Listener {
         if (!ItemUtil.isEquivalentItem(resultStack, singleItem) &&
                 !ItemUtil.isEquivalentItem(resultStack, singleItem) &&
                 !ItemUtil.isEquivalentItem(resultStack, singleItem)) {
-            System.out.println("result stack no match");
             return;
         }
         event.setCancelled(true);
