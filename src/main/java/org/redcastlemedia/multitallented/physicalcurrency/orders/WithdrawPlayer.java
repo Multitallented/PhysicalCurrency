@@ -23,15 +23,19 @@ public final class WithdrawPlayer {
         double inventoryAmount = 0;
         if (offlinePlayer.isOnline() && amount > account.getAmount()) {
             Player player = (Player) offlinePlayer;
-            TransferPhysicalToAccount.execute(player, 9999999);
+            if (!player.isDead()) {
+                TransferPhysicalToAccount.execute(player, 9999999);
+            }
         }
         double newAmount = account.getAmount() - amount;
         newAmount = newAmount < 0 ? 0 : newAmount;
         account.setAmount(newAmount);
         if (offlinePlayer.isOnline() && newAmount > 0) {
             Player player = (Player) offlinePlayer;
-            TransferAccountToPhysical.execute(player);
-            inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
+            if (!player.isDead()) {
+                TransferAccountToPhysical.execute(player);
+                inventoryAmount += ItemUtil.countCurrencyInInventory(player.getInventory());
+            }
         }
         if (ConfigManager.getInstance().isUseLogs()) {
             TransactionLog.execute(offlinePlayer, amount, true);

@@ -14,8 +14,11 @@ public final class GetBalance {
         Account account = AccountManager.getInstance().getAccount(offlinePlayer.getUniqueId());
         double balance = account.getAmount();
         if (offlinePlayer.isOnline()) {
-            double physicalCurrencyValue = ItemUtil.countCurrencyInInventory(((Player) offlinePlayer).getInventory());
-            balance += physicalCurrencyValue;
+            Player player = (Player) offlinePlayer;
+            if (!player.isDead()) {
+                double physicalCurrencyValue = ItemUtil.countCurrencyInInventory(player.getInventory());
+                balance += physicalCurrencyValue;
+            }
         }
         return balance;
     }

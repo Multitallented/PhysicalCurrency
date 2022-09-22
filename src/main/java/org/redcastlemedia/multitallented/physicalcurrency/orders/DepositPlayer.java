@@ -23,8 +23,10 @@ public final class DepositPlayer {
         account.setAmount(newAmount);
         if (offlinePlayer.isOnline()) {
             Player player = (Player) offlinePlayer;
-            TransferPhysicalToAccount.execute(player, 9999999);
-            TransferAccountToPhysical.execute(player);
+            if (!player.isDead()) {
+                TransferPhysicalToAccount.execute(player, 9999999);
+                TransferAccountToPhysical.execute(player);
+            }
         }
         if (ConfigManager.getInstance().isUseLogs()) {
             TransactionLog.execute(offlinePlayer, amount, false);
